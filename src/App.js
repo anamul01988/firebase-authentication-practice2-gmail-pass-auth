@@ -1,27 +1,55 @@
 import { getAuth } from "firebase/auth";
-import './App.css';
+import "bootstrap/dist/css/bootstrap.min.css";
+import "./App.css";
 import app from "./firebase-init";
+import Form from "react-bootstrap/Form";
+import Button from "react-bootstrap/Button";
+
 const auth = getAuth(app);
 function App() {
-  const hadleEmailBlur = e =>{ //ekta parameter er jonno na dile o cholto 
-    console.log(e.target.value)
-  }
-  const hadlePasswordBlur = e =>{ //ekta parameter er jonno na dile o cholto 
-    console.log(e.target.value)
-  }
+  const hadleEmailBlur = (e) => {
+    //ekta parameter er jonno na dile o cholto
+    console.log(e.target.value);
+  };
+  const hadlePasswordBlur = (e) => {
+    //ekta parameter er jonno na dile o cholto
+    console.log(e.target.value);
+  };
 
-  const handleFormSubmit = e =>{
-    console.log("submitted")
+  const handleFormSubmit = (e) => {
+    console.log("submitted");
     e.preventDefault();
-  }
+  };
   return (
-    <div className="App">
-       <form onSubmit={handleFormSubmit}>
+    <div >
+      {/* <form onSubmit={handleFormSubmit}>
            <input onBlur={hadleEmailBlur} type="email" />
            <input onBlur={hadlePasswordBlur} type="password" name="" id="" />
            <br />
            <input type="submit"  vlaue="login" name="" id="" /> 
-       </form>
+       </form> */}
+
+     <div className="registration w-50 mx-auto mt-3">
+      <h2>Registration Form!! </h2>
+     <Form onSubmit={handleFormSubmit}>
+        <Form.Group className="mb-3" controlId="formBasicEmail">
+          <Form.Label>Email address</Form.Label>
+          <Form.Control onBlur={hadleEmailBlur} type="email" placeholder="Enter email" />
+          <Form.Text className="text-muted">
+            We'll never share your email with anyone else.
+          </Form.Text>
+        </Form.Group>
+
+        <Form.Group className="mb-3" controlId="formBasicPassword">
+          <Form.Label>Password</Form.Label>
+          <Form.Control onBlur={hadlePasswordBlur} type="password" placeholder="Password" />
+        </Form.Group>
+     
+        <Button variant="primary" type="submit">
+          Submit
+        </Button>
+      </Form>
+     </div>
     </div>
   );
 }
