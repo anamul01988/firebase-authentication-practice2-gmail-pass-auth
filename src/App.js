@@ -1,23 +1,17 @@
-import logo from './logo.svg';
+import { getAuth } from "firebase/auth";
 import './App.css';
-
+import app from "./firebase-init";
+const auth = getAuth(app);
 function App() {
+  const hadleEmailChange = e =>{ //ekta parameter er jonno na dile o cholto 
+    console.log(e.target.value)
+  }
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+       <form action="#">
+           <input onChange={hadleEmailChange} type="email" />
+           <input type="password" name="" id="" />
+       </form>
     </div>
   );
 }
