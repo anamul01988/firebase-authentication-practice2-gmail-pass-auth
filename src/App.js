@@ -13,6 +13,7 @@ function App() {
  const [email, setEmail] = useState('');
  const [password, setPassword] = useState('');
  const [validated, setValidated] = useState(false);
+ const [error, setError] = useState('');
 
 
   const hadleEmailBlur = (e) => {
@@ -25,13 +26,21 @@ function App() {
   };
 
   const handleFormSubmit = (e) => {
+    e.preventDefault();
     const form = e.currentTarget;
     if (form.checkValidity() === false) {
-      e.preventDefault();
       e.stopPropagation();
+      return;
+    }
+
+    if(!/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/.test(password)){
+      setError('password should contain at least one special character') // jodi regex na match khay  aita dekhabe
+       return;
     }
 
     setValidated(true);
+    setError(""); //jodi error na pay
+
 
 
 
@@ -53,7 +62,7 @@ createUserWithEmailAndPassword(auth, email, password)
 
 
     console.log("submitted",email,password);
-    e.preventDefault();
+
   };
   return (
     <div >
@@ -85,7 +94,8 @@ createUserWithEmailAndPassword(auth, email, password)
             Please provide a valid password.
           </Form.Control.Feedback>
         </Form.Group>
-     
+         <p className="text-danger">{error}</p>
+
         <Button variant="primary" type="submit">
           Submit
         </Button>
