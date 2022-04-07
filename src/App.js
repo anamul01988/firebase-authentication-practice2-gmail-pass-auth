@@ -1,15 +1,17 @@
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+// import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 import app from "./firebase-init";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import { useState } from "react";
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+
 
 const auth = getAuth(app);
 function App() {
  const [email, setEmail] = useState('');
- const [pass, setPass] = useState('');
+ const [password, setPassword] = useState('');
 
   const hadleEmailBlur = (e) => {
     //ekta parameter er jonno na dile o cholto
@@ -17,11 +19,28 @@ function App() {
   };
   const hadlePasswordBlur = (e) => {
     //ekta parameter er jonno na dile o cholto
-    setPass(e.target.value);
+    setPassword(e.target.value);
   };
 
   const handleFormSubmit = (e) => {
-    console.log("submitted",email,pass);
+    const auth = getAuth();
+createUserWithEmailAndPassword(auth, email, password)
+  .then((userCredential) => {
+    // Signed in 
+    const user = userCredential.user;
+    console.log(user)
+    // ...
+  })
+  .catch((error) => {
+    const errorCode = error.code;
+    const errorMessage = error.message;
+    console.log(errorCode,errorMessage)
+    // ..
+  });
+
+
+
+    console.log("submitted",email,password);
     e.preventDefault();
   };
   return (
