@@ -5,7 +5,7 @@ import app from "./firebase-init";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import { useState } from "react";
-import { getAuth, createUserWithEmailAndPassword, sendEmailVerification, sendPasswordResetEmail } from "firebase/auth";
+import { getAuth, createUserWithEmailAndPassword, sendEmailVerification, sendPasswordResetEmail, updateProfile } from "firebase/auth";
 import { signInWithEmailAndPassword } from "firebase/auth";
 const auth = getAuth(app);
 function App() {
@@ -14,7 +14,11 @@ function App() {
   const [validated, setValidated] = useState(false);
   const [error, setError] = useState("");
   const [registered, setRegistered] = useState(false);
+  const [name, setName] = useState('');
 
+  const handleNameBlur = (e) => {
+    setName(e.target.value);
+  }
   const hadleEmailBlur = (e) => {
     setEmail(e.target.value);
   };
@@ -68,45 +72,19 @@ function App() {
       .then((userCredential) => {
         // Signed in
         const user = userCredential.user;
-        console.log(user);
-
+        console.log(user)
         //... register hower por empty korte
         setEmail('');
         setPassword('');
         verifyEmail();
-        // ...
+        setUserName();
       })
       .catch((error) => {
         console.error(error)
         setError(error.message);
-
-        // ..
       });
     }
 
-
-
-
-    // const auth = getAuth();
-    // createUserWithEmailAndPassword(auth, email, password)
-    //   .then((userCredential) => {
-    //     // Signed in
-    //     const user = userCredential.user;
-    //     console.log(user);
-
-    //     //... register hower por empty korte
-    //     setEmail("");
-    //     setPassword("");
-    //     // ...
-    //   })
-    //   .catch((error) => {
-    //     // const errorCode = error.code;
-    //     // const errorMessage = error.message;
-    //     // console.log(errorCode,errorMessage)
-    //     setError(error.message);
-
-    //     // ..
-    //   });
 
     console.log("submitted", email, password);
   }
@@ -118,6 +96,20 @@ function App() {
     })
   
   }
+
+  const setUserName = () =>{
+    updateProfile(auth.currentUser,{
+      displayName: name
+    })
+    .then(() =>{
+      console.log('updating name')
+    })
+    .catch(error =>{
+      setError(error.message)
+    }) 
+  }
+
+
  const verifyEmail = () =>{
    sendEmailVerification(auth.currentUser)
    .then(()=>{
@@ -130,6 +122,22 @@ function App() {
       <div className="registration w-50 mx-auto mt-3">
         <h2>Please {registered ? 'login' : 'Register'}!! </h2>
         <Form noValidate validated={validated} onSubmit={handleFormSubmit}>
+           
+     { !registered &&  <Form.Group className="mb-3" controlId="formBasicEmail">
+            <Form.Label>Your Name: </Form.Label>
+            <Form.Control
+              onBlur={handleNameBlur }
+              type="text"
+              placeholder="Enter name"
+              required
+            />
+        
+            <Form.Control.Feedback type="invalid">
+              Please provide your name.
+            </Form.Control.Feedback>
+          </Form.Group>}
+
+
           <Form.Group className="mb-3" controlId="formBasicEmail">
             <Form.Label>Email address</Form.Label>
             <Form.Control
